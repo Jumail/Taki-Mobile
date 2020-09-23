@@ -58,6 +58,10 @@ export default function AuthScreen({
       >
         Login with Facebook
       </Button>
+
+      <View>
+        <Text>Version 1.0.1</Text>
+      </View>
     </View>
   );
 
@@ -99,12 +103,14 @@ export default function AuthScreen({
   }
 
   async function signInWithFacebookAsync() {
+    console.log("Trying to signin with facebook");
     try {
       await Facebook.initializeAsync("330024598109308");
       const result = await Facebook.logInWithReadPermissionsAsync({
-        permissions: ["public_profile"],
+        permissions: ["public_profile", "email"],
       });
       if (result.type === "success") {
+        console.log("Login success");
         console.log(result);
         axios
           .get(`/auth/facebook/callback?access_token=${result.token}`)

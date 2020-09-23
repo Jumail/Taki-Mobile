@@ -47,6 +47,7 @@ export default function App() {
     }),
     []
   );
+  console.log(userToken);
   return (
     <AuthContext.Provider value={authContext}>
       {userToken === null || userToken === "" ? <AuthRoute /> : <MainRoute />}

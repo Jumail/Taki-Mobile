@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { Picker } from "@react-native-community/picker";
+// import { Picker } from "@react-native-community/picker";
 import { StackActions } from "@react-navigation/native";
 import axios from "axios";
 import React from "react";
