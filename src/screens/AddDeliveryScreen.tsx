@@ -1,11 +1,11 @@
 import AsyncStorage from "@react-native-community/async-storage";
+import { Picker } from "@react-native-community/picker";
 // import { Picker } from "@react-native-community/picker";
 import { StackActions } from "@react-navigation/native";
 import axios from "axios";
 import React from "react";
-import { FlatList, Platform, SafeAreaView, Text, View } from "react-native";
+import { FlatList, SafeAreaView, Text, View } from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
-import RNPickerSelect from "react-native-picker-select";
 // Types
 import { MainStackParamList } from "../types/MainTypes";
 
@@ -269,39 +269,34 @@ export default function AddDeliveryScreen({
                       marginTop: 4,
                     }}
                   >
-                    {Platform.OS == "android" ? (
-                      <Picker
-                        style={{ height: 50, width: "100%" }}
-                        onValueChange={(
-                          itemValue: number,
-                          itemIndex: number
-                        ) => {
-                          var newParcelArray = parcelArray;
-                          newParcelArray.splice(itemIndex, 1, itemValue);
-                          setParcelArray(newParcelArray);
-                        }}
-                      >
-                        <Picker.Item label="Small bag" value={1} />
-                        <Picker.Item label="Big bag" value={2} />
-                        <Picker.Item label="Box 1ft x 1ft" value={3} />
-                        <Picker.Item label="Box 1.5ft x 1.5ft" value={4} />
-                      </Picker>
-                    ) : (
-                      <RNPickerSelect
-                        useNativeAndroidPickerStyle={false}
-                        onValueChange={(value) => {
-                          var newParcelArray = parcelArray;
-                          newParcelArray.splice(index, 1, value);
-                          setParcelArray(newParcelArray);
-                        }}
-                        items={[
-                          { label: "Small bag", value: 1 },
-                          { label: "Big bag", value: 2 },
-                          { label: "Box 1ft x 1ft", value: 3 },
-                          { label: "Box 1.5ft x 1.5ft", value: 4 },
-                        ]}
-                      />
-                    )}
+                    <Picker
+                      style={{ height: 50, width: "100%" }}
+                      onValueChange={(itemValue: number, itemIndex: number) => {
+                        var newParcelArray = parcelArray;
+                        newParcelArray.splice(itemIndex, 1, itemValue);
+                        setParcelArray(newParcelArray);
+                      }}
+                    >
+                      <Picker.Item label="Small bag" value={1} />
+                      <Picker.Item label="Big bag" value={2} />
+                      <Picker.Item label="Box 1ft x 1ft" value={3} />
+                      <Picker.Item label="Box 1.5ft x 1.5ft" value={4} />
+                    </Picker>
+                    {/*
+                      // <RNPickerSelect
+                      //   useNativeAndroidPickerStyle={false}
+                      //   onValueChange={(value) => {
+                      //     var newParcelArray = parcelArray;
+                      //     newParcelArray.splice(index, 1, value);
+                      //     setParcelArray(newParcelArray);
+                      //   }}
+                      //   items={[
+                      //     { label: "Small bag", value: 1 },
+                      //     { label: "Big bag", value: 2 },
+                      //     { label: "Box 1ft x 1ft", value: 3 },
+                      //     { label: "Box 1.5ft x 1.5ft", value: 4 },
+                      //   ]}
+                      // /> */}
                   </View>
                 );
               }}

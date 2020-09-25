@@ -32,7 +32,7 @@ export default function MainRoute() {
   const Drawer = createDrawerNavigator<MainParamList>();
   return (
     <NavigationContainer>
-      <Drawer.Navigator drawerContent={(props) => <DrawerContent />}>
+      <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
         <Drawer.Screen name="HomeScreen" component={HomeStack} />
         <Drawer.Screen name="DeliveriesScreen" component={DeliveriesScreen} />
         <Drawer.Screen name="HistoryScreen" component={HistoryScreen} />

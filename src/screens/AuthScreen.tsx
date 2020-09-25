@@ -60,7 +60,7 @@ export default function AuthScreen({
       </Button>
 
       <View>
-        <Text>Version 1.0.1</Text>
+        <Text>Version 1.0.3</Text>
       </View>
     </View>
   );

@@ -7,19 +7,13 @@ import { Image, StyleSheet, View } from "react-native";
 import {
   Caption,
   Drawer,
-  Switch,
-  Text,
   Title,
   TouchableRipple,
   useTheme,
 } from "react-native-paper";
 import { AuthContext } from "../helpers/AuthContext";
-import { MainStackParamList } from "../types/MainTypes";
 
-export default function DrawerContent({
-  navigation,
-  route,
-}: MainStackParamList<"DrawerContent">) {
+export default function DrawerContent(props: any) {
   const [data, setData] = React.useState([]);
   const { signOut } = React.useContext(AuthContext);
 
@@ -27,6 +21,10 @@ export default function DrawerContent({
 
   React.useEffect(() => {
     getUserData();
+
+    console.log("LOgging props");
+    console.log(props);
+    console.log("Props logged");
   }, []);
 
   async function getUserData() {
@@ -99,8 +97,9 @@ export default function DrawerContent({
               )}
               label="Home"
               onPress={() => {
-                navigation.navigate("HomeScreen");
+                props.navigation.navigate("HomeScreen");
               }}
+              // onPress={() => navigation.navigate("HomeScreen")}
             />
             <DrawerItem
               icon={({ color, size }) => (
@@ -112,7 +111,7 @@ export default function DrawerContent({
               )}
               label="Deliveries"
               onPress={() => {
-                navigation.navigate("DeliveriesScreen");
+                props.navigation.navigate("DeliveriesScreen");
               }}
             />
             <DrawerItem
@@ -125,7 +124,7 @@ export default function DrawerContent({
               )}
               label="History"
               onPress={() => {
-                navigation.navigate("HistoryScreen");
+                props.navigation.navigate("HistoryScreen");
               }}
             />
             {/* <DrawerItem
@@ -147,7 +146,7 @@ export default function DrawerContent({
               )}
               label="Notifications"
               onPress={() => {
-                navigation.navigate("NotificationScreen");
+                props.navigation.navigate("NotificationScreen");
               }}
             />
             <DrawerItem
@@ -160,11 +159,11 @@ export default function DrawerContent({
               )}
               label="Feedback"
               onPress={() => {
-                navigation.navigate("FeedbackScreen");
+                props.navigation.navigate("FeedbackScreen");
               }}
             />
           </Drawer.Section>
-          <Drawer.Section title="Preferences">
+          {/* <Drawer.Section title="Preferences">
             <TouchableRipple
               onPress={() => {
                 console.log("Theme toggle");
@@ -177,7 +176,7 @@ export default function DrawerContent({
                 </View>
               </View>
             </TouchableRipple>
-          </Drawer.Section>
+          </Drawer.Section> */}
         </View>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
@@ -194,7 +193,7 @@ export default function DrawerContent({
             signOut();
           }}
         />
-        <Caption style={{ marginHorizontal: 20 }}>Version: 1.0.0</Caption>
+        <Caption style={{ marginHorizontal: 20 }}>Version: 1.0.4</Caption>
       </Drawer.Section>
     </View>
   );
