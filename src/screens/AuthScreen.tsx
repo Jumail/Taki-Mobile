@@ -60,7 +60,7 @@ export default function AuthScreen({
       </Button>
 
       <View>
-        <Text>Version 1.0.3</Text>
+        <Text>Version 1.0.5</Text>
       </View>
     </View>
   );
@@ -110,8 +110,6 @@ export default function AuthScreen({
         permissions: ["public_profile", "email"],
       });
       if (result.type === "success") {
-        console.log("Login success");
-        console.log(result);
         axios
           .get(`/auth/facebook/callback?access_token=${result.token}`)
           .then(function (response) {

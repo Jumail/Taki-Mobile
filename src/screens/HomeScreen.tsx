@@ -7,6 +7,7 @@ import {
   Alert,
   Dimensions,
   Image,
+  Platform,
   SafeAreaView,
   TextInput,
   TouchableOpacity,
@@ -97,7 +98,7 @@ export default function Home({
               navigation.openDrawer();
             }}
           />
-          <Appbar.Content title="OauthX Express" />
+          <Appbar.Content title="Taki" />
         </Appbar.Header>
         <View
           style={{
@@ -107,8 +108,8 @@ export default function Home({
           }}
         >
           <OnTheWay
-            width={Dimensions.get("window").width - 50}
-            height={Dimensions.get("window").width - 50}
+            width={Dimensions.get("window").width - 65}
+            height={Dimensions.get("window").width - 65}
           />
           <View
             style={{
@@ -125,7 +126,7 @@ export default function Home({
                 marginBottom: 8,
               }}
             >
-              OauthX Express
+              Taki
             </Text>
             <Text
               style={{
@@ -162,7 +163,7 @@ export default function Home({
               }}
             /> */}
             <Image
-              source={require("../../assets/profile.jpg")}
+              source={require("../../assets/user.png")}
               style={{
                 width: 45,
                 height: 45,
@@ -260,7 +261,10 @@ export default function Home({
           <Portal>
             <Modal
               visible={isAddressModalVisible}
-              contentContainerStyle={{ flex: 1 }}
+              contentContainerStyle={{
+                flex: 1,
+                marginTop: Platform.OS == "android" ? 100 : 0,
+              }}
             >
               <View style={{ flex: 1, paddingHorizontal: 14 }}>
                 <View

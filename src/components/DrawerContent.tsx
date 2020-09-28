@@ -14,17 +14,16 @@ import {
 import { AuthContext } from "../helpers/AuthContext";
 
 export default function DrawerContent(props: any) {
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState({
+    username: null,
+    phone: null,
+  });
   const { signOut } = React.useContext(AuthContext);
 
   const paperTheme = useTheme();
 
   React.useEffect(() => {
     getUserData();
-
-    console.log("LOgging props");
-    console.log(props);
-    console.log("Props logged");
   }, []);
 
   async function getUserData() {
@@ -65,7 +64,7 @@ export default function DrawerContent(props: any) {
               /> */}
 
               <Image
-                source={require("../../assets/profile.jpg")}
+                source={require("../../assets/user.png")}
                 style={{
                   width: 45,
                   height: 45,
@@ -80,8 +79,8 @@ export default function DrawerContent(props: any) {
                   width: "100%",
                 }}
               >
-                <Title style={styles.title}>{`@${data.username}`}</Title>
-                <Caption style={styles.caption}>{data.email}</Caption>
+                <Title style={styles.title}>{data.username}</Title>
+                <Caption style={styles.caption}>{data.phone}</Caption>
               </View>
             </View>
           </TouchableRipple>
@@ -193,7 +192,7 @@ export default function DrawerContent(props: any) {
             signOut();
           }}
         />
-        <Caption style={{ marginHorizontal: 20 }}>Version: 1.0.4</Caption>
+        <Caption style={{ marginHorizontal: 20 }}>Version: 1.0.5</Caption>
       </Drawer.Section>
     </View>
   );

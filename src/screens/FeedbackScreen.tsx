@@ -3,21 +3,20 @@ import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { SafeAreaView, Text, View } from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
+// Types
 import { MainStackParamList } from "../types/MainTypes";
 
 export default function FeedbackScreen({
   navigation,
   route,
 }: MainStackParamList<"FeedbackScreen">) {
-  const [subject, setSubject] = React.useState();
-  const [feedback, setFeedback] = React.useState();
+  const [subject, setSubject] = React.useState(String);
+  const [feedback, setFeedback] = React.useState(String);
 
   function submitFeedback() {
-    axios
-      .post("/feedbacks")
-      .then(function (response) {
-        console.log(response);
-      })
+    const jwt = axios
+      .post("/feedbacks", {})
+      .then(function (response) {})
       .catch(function (error) {
         console.log(error);
       });
@@ -48,11 +47,19 @@ export default function FeedbackScreen({
             }}
           >
             <Text style={{ flex: 1 }}>Subject</Text>
-            <TextInput style={{ flex: 3, height: 30 }}></TextInput>
+            <TextInput
+              onChangeText={(text) => {
+                setSubject(text);
+              }}
+              style={{ flex: 3, height: 30 }}
+            ></TextInput>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={{ flex: 1 }}>Feedback</Text>
             <TextInput
+              onChangeText={(text) => {
+                setFeedback(text);
+              }}
               multiline={true}
               style={{ flex: 3, height: 200 }}
             ></TextInput>

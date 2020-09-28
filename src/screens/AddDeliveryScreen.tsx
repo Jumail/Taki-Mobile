@@ -1,11 +1,18 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { Picker } from "@react-native-community/picker";
-// import { Picker } from "@react-native-community/picker";
 import { StackActions } from "@react-navigation/native";
 import axios from "axios";
 import React from "react";
-import { FlatList, SafeAreaView, Text, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
+// import { Picker } from "@react-native-community/picker";
+import RNPickerSelect from "react-native-picker-select";
 // Types
 import { MainStackParamList } from "../types/MainTypes";
 
@@ -97,6 +104,17 @@ export default function AddDeliveryScreen({
       )
       .then(function (response) {
         console.log(response.data);
+        Alert.alert(
+          "Success",
+          "A courier will be sent to your location soon.",
+          [
+            {
+              text: "OK",
+              onPress: () => navigation.dispatch(StackActions.pop()),
+            },
+          ],
+          { cancelable: false }
+        );
       })
       .catch(function (error) {
         console.log(error);
@@ -269,7 +287,7 @@ export default function AddDeliveryScreen({
                       marginTop: 4,
                     }}
                   >
-                    <Picker
+                    {/* <Picker
                       style={{ height: 50, width: "100%" }}
                       onValueChange={(itemValue: number, itemIndex: number) => {
                         var newParcelArray = parcelArray;
@@ -282,21 +300,31 @@ export default function AddDeliveryScreen({
                       <Picker.Item label="Box 1ft x 1ft" value={3} />
                       <Picker.Item label="Box 1.5ft x 1.5ft" value={4} />
                     </Picker>
-                    {/*
-                      // <RNPickerSelect
-                      //   useNativeAndroidPickerStyle={false}
-                      //   onValueChange={(value) => {
-                      //     var newParcelArray = parcelArray;
-                      //     newParcelArray.splice(index, 1, value);
-                      //     setParcelArray(newParcelArray);
-                      //   }}
-                      //   items={[
-                      //     { label: "Small bag", value: 1 },
-                      //     { label: "Big bag", value: 2 },
-                      //     { label: "Box 1ft x 1ft", value: 3 },
-                      //     { label: "Box 1.5ft x 1.5ft", value: 4 },
-                      //   ]}
-                      // /> */}
+                     */}
+                    <RNPickerSelect
+                      useNativeAndroidPickerStyle={true}
+                      onValueChange={(value) => {
+                        var newParcelArray = parcelArray;
+                        newParcelArray.splice(index, 1, value);
+                        setParcelArray(newParcelArray);
+                      }}
+                      style={{
+                        inputAndroid: {
+                          color: "black",
+                        },
+                        placeholder: {
+                          color: "gray",
+                          fontSize: 12,
+                          fontWeight: "bold",
+                        },
+                      }}
+                      items={[
+                        { label: "Small bag", value: 1 },
+                        { label: "Big bag", value: 2 },
+                        { label: "Box 1ft x 1ft", value: 3 },
+                        { label: "Box 1.5ft x 1.5ft", value: 4 },
+                      ]}
+                    />
                   </View>
                 );
               }}
@@ -317,3 +345,26 @@ export default function AddDeliveryScreen({
     </View>
   );
 }
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "gray",
+    borderRadius: 4,
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    borderColor: "purple",
+    borderRadius: 8,
+    color: "black",
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});

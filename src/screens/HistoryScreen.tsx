@@ -4,6 +4,7 @@ import QueryString from "qs";
 import React, { useEffect } from "react";
 import {
   AsyncStorage,
+  Dimensions,
   FlatList,
   Linking,
   Platform,
@@ -20,6 +21,8 @@ import {
   Text,
   Title,
 } from "react-native-paper";
+// SVG
+import Empty from "../../assets/SVG/Empty";
 // Types
 import { MainStackParamList } from "../types/MainTypes";
 
@@ -84,7 +87,7 @@ export default function HistoryScreen({
               }}
             />
             <Appbar.Content
-              title="Completed"
+              title="History"
               subtitle={`${data.length} deliveries`}
             />
             <Appbar.Action
@@ -97,77 +100,92 @@ export default function HistoryScreen({
           </Appbar.Header>
 
           <View style={{ flex: 1 }}>
-            <FlatList
-              refreshControl={
-                <RefreshControl
-                  refreshing={loading}
-                  onRefresh={() => getCompletedDeliveries()}
+            {data.length == 0 ? (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                }}
+              >
+                <Empty
+                  width={Dimensions.get("window").width - 65}
+                  height={Dimensions.get("window").width - 65}
                 />
-              }
-              scrollEnabled={true}
-              data={data}
-              renderItem={({ item }) => {
-                return (
-                  <Card
-                    style={{
-                      marginBottom: 8,
-                      margin: 8,
-                    }}
-                    onPress={() => {
-                      setSelectedData(item);
-                      setIsModalVisible(true);
-                    }}
-                  >
-                    <Card.Content>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          width: "100%",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Title
+                <Text>You have no items in History</Text>
+              </View>
+            ) : (
+              <FlatList
+                refreshControl={
+                  <RefreshControl
+                    refreshing={loading}
+                    onRefresh={() => getCompletedDeliveries()}
+                  />
+                }
+                scrollEnabled={true}
+                data={data}
+                renderItem={({ item }) => {
+                  return (
+                    <Card
+                      style={{
+                        marginBottom: 8,
+                        margin: 8,
+                      }}
+                      onPress={() => {
+                        setSelectedData(item);
+                        setIsModalVisible(true);
+                      }}
+                    >
+                      <Card.Content>
+                        <View
                           style={{
-                            flex: 1,
-                            textAlignVertical: "center",
+                            flexDirection: "row",
+                            width: "100%",
+                            alignItems: "center",
                           }}
                         >
-                          {item.customer_name}
-                        </Title>
-                        <Caption>{moment(item.created_at).fromNow()}</Caption>
-                      </View>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                        }}
-                      >
-                        <Paragraph>{`${item.address}, nearby ${item.nearby}`}</Paragraph>
-                      </View>
-                      <Caption>Status: Completed</Caption>
+                          <Title
+                            style={{
+                              flex: 1,
+                              textAlignVertical: "center",
+                            }}
+                          >
+                            {item.customer_name}
+                          </Title>
+                          <Caption>{moment(item.created_at).fromNow()}</Caption>
+                        </View>
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                          }}
+                        >
+                          <Paragraph>{`${item.address}, nearby ${item.nearby}`}</Paragraph>
+                        </View>
+                        <Caption>Status: Completed</Caption>
 
-                      <Button
-                        mode="contained"
-                        style={{ marginTop: 4 }}
-                        onPress={() => {
-                          let phoneNumber = "";
+                        <Button
+                          mode="contained"
+                          style={{ marginTop: 4 }}
+                          onPress={() => {
+                            let phoneNumber = "";
 
-                          if (Platform.OS === "android") {
-                            phoneNumber = `tel:${item.customer_contact}`;
-                          } else {
-                            phoneNumber = `telprompt:${item.customer.contact}`;
-                          }
+                            if (Platform.OS === "android") {
+                              phoneNumber = `tel:${item.customer_contact}`;
+                            } else {
+                              phoneNumber = `telprompt:${item.customer.contact}`;
+                            }
 
-                          Linking.openURL(phoneNumber);
-                        }}
-                      >
-                        {item.customer_contact}
-                      </Button>
-                    </Card.Content>
-                  </Card>
-                );
-              }}
-            ></FlatList>
+                            Linking.openURL(phoneNumber);
+                          }}
+                        >
+                          {item.customer_contact}
+                        </Button>
+                      </Card.Content>
+                    </Card>
+                  );
+                }}
+              ></FlatList>
+            )}
           </View>
         </View>
       </SafeAreaView>

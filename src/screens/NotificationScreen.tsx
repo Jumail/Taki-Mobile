@@ -3,6 +3,7 @@ import moment from "moment";
 import React, { useEffect } from "react";
 import {
   AsyncStorage,
+  Dimensions,
   FlatList,
   RefreshControl,
   SafeAreaView,
@@ -16,6 +17,8 @@ import {
   Text,
   Title,
 } from "react-native-paper";
+// SVG
+import Empty from "../../assets/SVG/Empty";
 // Types
 import { MainStackParamList } from "../types/MainTypes";
 
@@ -88,58 +91,73 @@ export default function NotificationScreen({
           </Appbar.Header>
 
           <View style={{ flex: 1 }}>
-            <FlatList
-              refreshControl={
-                <RefreshControl
-                  refreshing={loading}
-                  onRefresh={() => getNotifications()}
+            {data.length == 0 ? (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                }}
+              >
+                <Empty
+                  width={Dimensions.get("window").width - 65}
+                  height={Dimensions.get("window").width - 65}
                 />
-              }
-              scrollEnabled={true}
-              data={data}
-              renderItem={({ item }) => {
-                return (
-                  <Card
-                    style={{
-                      marginBottom: 8,
-                      margin: 8,
-                    }}
-                    onPress={() => {
-                      setSelectedData(item);
-                      setIsModalVisible(true);
-                    }}
-                  >
-                    <Card.Content>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          width: "100%",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Title
+                <Text>You have no notifications</Text>
+              </View>
+            ) : (
+              <FlatList
+                refreshControl={
+                  <RefreshControl
+                    refreshing={loading}
+                    onRefresh={() => getNotifications()}
+                  />
+                }
+                scrollEnabled={true}
+                data={data}
+                renderItem={({ item }) => {
+                  return (
+                    <Card
+                      style={{
+                        marginBottom: 8,
+                        margin: 8,
+                      }}
+                      onPress={() => {
+                        setSelectedData(item);
+                        setIsModalVisible(true);
+                      }}
+                    >
+                      <Card.Content>
+                        <View
                           style={{
-                            flex: 1,
-                            textAlignVertical: "center",
+                            flexDirection: "row",
+                            width: "100%",
+                            alignItems: "center",
                           }}
                         >
-                          {item.title}
-                        </Title>
-                        <Caption>{moment(item.created_at).fromNow()}</Caption>
-                      </View>
-                      <View
-                        style={{
-                          flex: 1,
-                          flexDirection: "row",
-                        }}
-                      >
-                        <Paragraph>{item.body}</Paragraph>
-                      </View>
-                    </Card.Content>
-                  </Card>
-                );
-              }}
-            ></FlatList>
+                          <Title
+                            style={{
+                              flex: 1,
+                              textAlignVertical: "center",
+                            }}
+                          >
+                            {item.title}
+                          </Title>
+                          <Caption>{moment(item.created_at).fromNow()}</Caption>
+                        </View>
+                        <View
+                          style={{
+                            flex: 1,
+                            flexDirection: "row",
+                          }}
+                        >
+                          <Paragraph>{item.body}</Paragraph>
+                        </View>
+                      </Card.Content>
+                    </Card>
+                  );
+                }}
+              ></FlatList>
+            )}
           </View>
         </View>
       </SafeAreaView>
