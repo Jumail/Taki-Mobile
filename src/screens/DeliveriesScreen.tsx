@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment";
-import qs from "qs";
-import React, { useEffect } from "react";
+import QueryString from "qs";
+import React from "react";
 import {
   AsyncStorage,
   Dimensions,
@@ -36,9 +36,15 @@ export default function DeliveriesScreen({
 
   const [selectedData, setSelectedData] = React.useState();
 
-  useEffect(() => {
-    getOngoingDeliveries();
-  }, []);
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // do something
+      setLoading(true);
+      getOngoingDeliveries();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   async function getOngoingDeliveries() {
     const id = await AsyncStorage.getItem("@User:id");
@@ -47,17 +53,16 @@ export default function DeliveriesScreen({
     const number_id = Number(id);
 
     // Query in the url
-    const query = qs.stringify({
-      _where: [{ user_id: number_id }],
+    const query = QueryString.stringify({
+      _where: [{ user_id: id }, { status: 1 || 2 || 3 }],
     });
 
     console.log(query);
-    console.log(jwt);
 
     // apiadmin.oauthx.mv/deliveries
 
     axios
-      .get(`/deliveries?_where[user_id]=${number_id}`, {
+      .get(`/deliveries?_sort=created_at:desc&${query}`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },

@@ -1,8 +1,9 @@
+import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { SafeAreaView, Text, View } from "react-native";
-import { Appbar, Button, TextInput } from "react-native-paper";
+import { Alert, SafeAreaView, Text, TextInput, View } from "react-native";
+import { Appbar, Button } from "react-native-paper";
 // Types
 import { MainStackParamList } from "../types/MainTypes";
 
@@ -13,10 +14,42 @@ export default function FeedbackScreen({
   const [subject, setSubject] = React.useState(String);
   const [feedback, setFeedback] = React.useState(String);
 
-  function submitFeedback() {
-    const jwt = axios
-      .post("/feedbacks", {})
-      .then(function (response) {})
+  async function submitFeedback() {
+    const jwt = await AsyncStorage.getItem("@User:jwt");
+
+    console.log(jwt);
+
+    axios
+      .post(
+        "/feedbacks",
+        {
+          subject: subject,
+          body: feedback,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data);
+        Alert.alert(
+          "Thank you.",
+          "Your feedback has been submitted and will be reviewed by our team.",
+          [
+            {
+              text: "Thank you",
+              onPress: () =>
+                console.log(
+                  "Your feedback has been submitted and will be reviewed by our team."
+                ),
+            },
+            { text: "OK", onPress: () => console.log("OK Pressed") },
+          ],
+          { cancelable: false }
+        );
+      })
       .catch(function (error) {
         console.log(error);
       });
@@ -51,7 +84,13 @@ export default function FeedbackScreen({
               onChangeText={(text) => {
                 setSubject(text);
               }}
-              style={{ flex: 3, height: 30 }}
+              style={{
+                flex: 3,
+                height: 50,
+                textAlignVertical: "center",
+                backgroundColor: "#E7E7E7",
+                padding: 8,
+              }}
             ></TextInput>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -61,10 +100,23 @@ export default function FeedbackScreen({
                 setFeedback(text);
               }}
               multiline={true}
-              style={{ flex: 3, height: 200 }}
+              numberOfLines={20}
+              style={{
+                flex: 3,
+                height: 200,
+                textAlignVertical: "top",
+                backgroundColor: "#E7E7E7",
+                padding: 8,
+              }}
             ></TextInput>
           </View>
-          <Button mode="contained" style={{ marginTop: 12 }}>
+          <Button
+            onPress={() => {
+              submitFeedback();
+            }}
+            mode="contained"
+            style={{ marginTop: 12 }}
+          >
             Submit Feedback
           </Button>
         </View>

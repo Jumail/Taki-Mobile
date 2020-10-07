@@ -1,5 +1,6 @@
 import axios from "axios";
 import moment from "moment";
+import QueryString from "qs";
 import React, { useEffect } from "react";
 import {
   AsyncStorage,
@@ -42,8 +43,12 @@ export default function NotificationScreen({
 
     const number_id = Number(id);
 
+    const query = QueryString.stringify({
+      _where: [{ user_id: id }],
+    });
+
     const qs = axios
-      .get(`/notifications?_where[user_id]=${id}`, {
+      .get(`/notifications?_sort=created_at:desc&${query}`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },

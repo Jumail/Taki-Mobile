@@ -1,7 +1,7 @@
 import axios from "axios";
 import moment from "moment";
 import QueryString from "qs";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   AsyncStorage,
   Dimensions,
@@ -36,9 +36,15 @@ export default function HistoryScreen({
 
   const [selectedData, setSelectedData] = React.useState();
 
-  useEffect(() => {
-    getCompletedDeliveries();
-  }, []);
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // do something
+      setLoading(true);
+      getCompletedDeliveries();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   async function getCompletedDeliveries() {
     const id = await AsyncStorage.getItem("@User:id");
@@ -52,7 +58,7 @@ export default function HistoryScreen({
     });
 
     const qs = axios
-      .get(`/deliveries?${query}`, {
+      .get(`/deliveries?_sort=created_at:desc&${query}`, {
         headers: {
           Authorization: `Bearer ${jwt}`,
         },

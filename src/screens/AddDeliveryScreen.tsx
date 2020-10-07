@@ -123,6 +123,7 @@ export default function AddDeliveryScreen({
 
   function updateList(count: number) {
     var parcel_array = [];
+    console.log(parcelArray);
 
     for (var i = 1; i <= count; i++) {
       parcel_array.push(0);
@@ -273,10 +274,10 @@ export default function AddDeliveryScreen({
             </View>
             <FlatList
               data={parcelArray}
+              keyExtractor={(item, index) => "key" + index}
               renderItem={({ item, index, separators }) => {
                 return (
                   <View
-                    key={index}
                     style={{
                       padding: 8,
                       borderBottomWidth: 1,
@@ -287,20 +288,6 @@ export default function AddDeliveryScreen({
                       marginTop: 4,
                     }}
                   >
-                    {/* <Picker
-                      style={{ height: 50, width: "100%" }}
-                      onValueChange={(itemValue: number, itemIndex: number) => {
-                        var newParcelArray = parcelArray;
-                        newParcelArray.splice(itemIndex, 1, itemValue);
-                        setParcelArray(newParcelArray);
-                      }}
-                    >
-                      <Picker.Item label="Small bag" value={1} />
-                      <Picker.Item label="Big bag" value={2} />
-                      <Picker.Item label="Box 1ft x 1ft" value={3} />
-                      <Picker.Item label="Box 1.5ft x 1.5ft" value={4} />
-                    </Picker>
-                     */}
                     <RNPickerSelect
                       useNativeAndroidPickerStyle={true}
                       onValueChange={(value) => {
