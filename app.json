@@ -2,7 +2,7 @@
   "expo": {
     "name": "Taki",
     "slug": "oauthx-mobile",
-    "version": "1.0.6",
+    "version": "1.0.8",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,7 +18,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.oauthx.taki"
+      "package": "com.oauthx.android"
     },
     "web": {
       "favicon": "./assets/favicon.png"

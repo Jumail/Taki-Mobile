@@ -192,7 +192,7 @@ export default function DrawerContent(props: any) {
             signOut();
           }}
         />
-        <Caption style={{ marginHorizontal: 20 }}>Version: 1.0.6</Caption>
+        <Caption style={{ marginHorizontal: 20 }}>Version: 1.0.8</Caption>
       </Drawer.Section>
     </View>
   );

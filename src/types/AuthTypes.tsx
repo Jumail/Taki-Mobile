@@ -9,6 +9,8 @@ export type AuthParamList = {
     data: JSON;
   };
   OtpScreen: undefined;
+  LoginScreen: undefined;
+  SignUpScreen: undefined;
 };
 
 export type AuthStackParamList<T extends keyof AuthParamList> = {
