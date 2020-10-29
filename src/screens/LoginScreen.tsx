@@ -36,7 +36,7 @@ export default function Login({
 
   return (
     <View style={{ flex: 1 }}>
-      <Appbar.Header>
+      <Appbar.Header style={{ elevation: 0, backgroundColor: "white" }}>
         <Appbar.BackAction
           onPress={() => {
             navigation.dispatch(StackActions.pop());
@@ -44,14 +44,21 @@ export default function Login({
         />
         <Appbar.Content title="Login" />
       </Appbar.Header>
-      <View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
+      <View
+        style={{
+          paddingHorizontal: 20,
+          paddingVertical: 8,
+          backgroundColor: "white",
+          flex: 1,
+        }}
+      >
         <TextInput
           placeholder="Email or Username"
           onChangeText={(text) => {
             setErrorMsg("");
             setEmail(text);
           }}
-          style={{ marginBottom: 5 }}
+          style={{ marginBottom: 5, backgroundColor: "white" }}
           keyboardType="email-address"
         />
         <TextInput
@@ -61,23 +68,35 @@ export default function Login({
             setPassword(text);
           }}
           secureTextEntry={true}
+          style={{ backgroundColor: "white" }}
         />
-        <Text>{errorMsg}</Text>
+        <Text style={{ marginTop: 20, color: "red" }}>{errorMsg}</Text>
         <TouchableOpacity
           style={{
-            backgroundColor: "blue",
+            backgroundColor: "#339989",
             marginVertical: 20,
             height: 50,
             justifyContent: "center",
             alignItems: "center",
+            borderRadius: 20,
           }}
           onPress={() => {
             _doLogin();
           }}
         >
-          <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
             Login
           </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity>
+          <Text style={{ textAlign: "right" }}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
     </View>

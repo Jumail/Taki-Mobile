@@ -39,7 +39,7 @@ export default function SignUpScreen({
 
   return (
     <View style={{ flex: 1 }}>
-      <Appbar.Header>
+      <Appbar.Header style={{ backgroundColor: "white", elevation: 0 }}>
         <Appbar.BackAction
           onPress={() => {
             navigation.dispatch(StackActions.pop());
@@ -47,14 +47,21 @@ export default function SignUpScreen({
         />
         <Appbar.Content title="Register" />
       </Appbar.Header>
-      <View style={{ paddingHorizontal: 20, paddingVertical: 8 }}>
+      <View
+        style={{
+          paddingHorizontal: 20,
+          paddingVertical: 8,
+          backgroundColor: "white",
+          flex: 1,
+        }}
+      >
         <TextInput
           placeholder="Username"
           onChangeText={(text) => {
             setErrorMsg("");
             setUsername(text);
           }}
-          style={{ marginBottom: 5 }}
+          style={{ marginBottom: 5, backgroundColor: "white" }}
         />
         <TextInput
           placeholder="Email"
@@ -63,7 +70,7 @@ export default function SignUpScreen({
             setEmail(text);
           }}
           keyboardType="email-address"
-          style={{ marginBottom: 5 }}
+          style={{ marginBottom: 5, backgroundColor: "white" }}
         />
         <TextInput
           placeholder="Password"
@@ -72,22 +79,24 @@ export default function SignUpScreen({
             setPassword(text);
           }}
           secureTextEntry={true}
+          style={{ backgroundColor: "white" }}
         />
         <Text style={{ marginTop: 10, color: "red" }}>{errorMsg}</Text>
         <TouchableOpacity
           style={{
-            backgroundColor: "blue",
+            backgroundColor: "#339989",
             marginVertical: 20,
             height: 50,
             justifyContent: "center",
             alignItems: "center",
+            borderRadius: 20,
           }}
           onPress={() => {
             _doLogin();
           }}
         >
           <Text style={{ fontSize: 18, fontWeight: "bold", color: "white" }}>
-            Next
+            Register
           </Text>
         </TouchableOpacity>
       </View>

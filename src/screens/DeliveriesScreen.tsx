@@ -12,6 +12,7 @@ import {
   SafeAreaView,
   View,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import {
   Appbar,
   Button,
@@ -89,27 +90,34 @@ export default function DeliveriesScreen({
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <Appbar.Header>
-            <Appbar.Action
-              icon="menu"
-              onPress={() => {
-                navigation.openDrawer();
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "white",
+              padding: 14,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <View>
+              <Text style={{ fontSize: 18, fontWeight: "700" }}>
+                Deliveries
+              </Text>
+              <Text>{` ${data.length} deliveries`}</Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#2B2C28",
+                padding: 8,
+                borderRadius: 20,
               }}
-            />
-            <Appbar.Content
-              title="Deliveries"
-              subtitle={`${data.length} deliveries`}
-            />
-            <Appbar.Action
-              icon="refresh"
-              onPress={() => {
-                setLoading(true);
-                getOngoingDeliveries();
-              }}
-            />
-          </Appbar.Header>
+            >
+              <Text style={{ color: "white", fontWeight: "600" }}>History</Text>
+            </TouchableOpacity>
+          </View>
 
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, backgroundColor: "white" }}>
             {data.length == 0 ? (
               <View
                 style={{
@@ -121,7 +129,7 @@ export default function DeliveriesScreen({
                   width={Dimensions.get("window").width - 65}
                   height={Dimensions.get("window").width - 65}
                 />
-                <Text>You have no items in History</Text>
+                <Text>You have no items</Text>
               </View>
             ) : (
               <FlatList

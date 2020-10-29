@@ -2,6 +2,10 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
+import { View } from "react-native";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { Ionicons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 // Components
 import DrawerContent from "../components/DrawerContent";
 // Screens
@@ -13,6 +17,7 @@ import HomeScreen from "../screens/HomeScreen";
 import NotificationsScreen from "../screens/NotificationScreen";
 // Types
 import { MainParamList } from "../types/MainTypes";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export function HomeStack() {
   const Stack = createStackNavigator();
@@ -24,24 +29,67 @@ export function HomeStack() {
   );
 }
 
-export default function MainRoute() {
-  const [data, setData] = React.useState({
-    name: null,
-  });
-
-  const Drawer = createDrawerNavigator<MainParamList>();
+export default function MaterialRoutes() {
+  const Tab = createMaterialTopTabNavigator();
   return (
-    <NavigationContainer>
-      <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
-        <Drawer.Screen name="HomeScreen" component={HomeStack} />
-        <Drawer.Screen name="DeliveriesScreen" component={DeliveriesScreen} />
-        <Drawer.Screen name="HistoryScreen" component={HistoryScreen} />
-        <Drawer.Screen
-          name="NotificationScreen"
-          component={NotificationsScreen}
-        />
-        <Drawer.Screen name="FeedbackScreen" component={FeedbackScreen} />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <View style={{ flex: 1, paddingTop: 28, backgroundColor: "#339989" }}>
+      <StatusBar style="dark" />
+      <NavigationContainer>
+        <StatusBar style="dark" />
+        <Tab.Navigator
+          tabBarOptions={{
+            showIcon: true,
+            showLabel: false,
+            inactiveTintColor: "#7de2d1",
+            activeTintColor: "white",
+            indicatorContainerStyle: {
+              backgroundColor: "#339989",
+            },
+            indicatorStyle: { backgroundColor: "#339989" },
+          }}
+          initialRouteName="HomeScreen"
+        >
+          <Tab.Screen
+            name="DeliveriesScreen"
+            component={DeliveriesScreen}
+            options={{
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons
+                  name={focused ? "md-list-box" : "md-list-box"}
+                  color={color}
+                  size={25}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="HomeScreen"
+            component={HomeStack}
+            options={{
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons
+                  name={focused ? "ios-home" : "md-home"}
+                  color={color}
+                  size={25}
+                />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="FeedbackScreen"
+            component={FeedbackScreen}
+            options={{
+              tabBarIcon: ({ color, focused }) => (
+                <Ionicons
+                  name={focused ? "md-person" : "md-person"}
+                  color={color}
+                  size={25}
+                />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </View>
   );
 }

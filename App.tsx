@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
 import React from "react";
+import { StatusBar } from "react-native";
 // Context
 import { AuthContext } from "./src/helpers/AuthContext";
 // Routes
