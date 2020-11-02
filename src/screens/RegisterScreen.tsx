@@ -45,10 +45,10 @@ export default function RegisterScreen({
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
-          <Appbar.Header>
+    <View style={{ flex: 1, backgroundColor: "white" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+          <Appbar.Header style={{ backgroundColor: "white" }}>
             <Appbar.Action
               icon="arrow-left"
               onPress={() => {
@@ -57,7 +57,7 @@ export default function RegisterScreen({
             />
             <Appbar.Content title="Register" />
           </Appbar.Header>
-          <View style={{ flex: 1, padding: 20 }}>
+          <View style={{ flex: 1, padding: 20, backgroundColor: "white" }}>
             <TextInput
               style={{ marginBottom: 8 }}
               value={contact}
@@ -78,9 +78,10 @@ export default function RegisterScreen({
                 height: 50,
                 alignItems: "center",
                 justifyContent: "center",
+                backgroundColor: "#339989",
               }}
             >
-              Next
+              Proceed
             </Button>
             <Caption>
               By clicking next you are agreeing to out to our terms of service

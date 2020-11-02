@@ -91,7 +91,7 @@ export default function AuthScreen({
           </TouchableOpacity>
         </View>
         <View style={{ justifyContent: "center", alignItems: "center" }}>
-          <Text>Version 1.0.8</Text>
+          <Text>Version 1.0.9</Text>
         </View>
       </View>
     </SafeAreaView>

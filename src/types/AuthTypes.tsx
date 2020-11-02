@@ -11,6 +11,7 @@ export type AuthParamList = {
   OtpScreen: undefined;
   LoginScreen: undefined;
   SignUpScreen: undefined;
+  ForgotScreen: undefined;
 };
 
 export type AuthStackParamList<T extends keyof AuthParamList> = {

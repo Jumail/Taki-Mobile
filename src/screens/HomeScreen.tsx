@@ -98,62 +98,6 @@ export default function Home({
             backgroundColor: "white",
           }}
         >
-          <View
-            style={{
-              width: Dimensions.get("window").width,
-              marginTop: 8,
-              padding: 20,
-            }}
-          >
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <View>
-                <Text
-                  style={{ fontWeight: "700", fontSize: 20, marginBottom: 5 }}
-                >
-                  Mohamed Jumail Asif
-                </Text>
-                <Text style={{ marginBottom: 5 }}>
-                  {`Address: ${data.address}`}
-                </Text>
-
-                <View
-                  style={{
-                    backgroundColor: "#2B2c28",
-                    width: 55,
-                    height: 20,
-                    borderRadius: 20,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text style={{ textAlign: "center", color: "white" }}>
-                    Edit
-                  </Text>
-                </View>
-              </View>
-              <View style={{ flex: 1 }}></View>
-              <Image
-                source={require("../../assets/user.png")}
-                style={{
-                  width: 30,
-                  height: 30,
-                  marginRight: 8,
-                  borderRadius: 30 / 2,
-                }}
-              />
-            </View>
-            <View
-              style={{
-                height: 0.5,
-                width: Dimensions.get("window").width - 24,
-                backgroundColor: "gray",
-                marginVertical: 20,
-                opacity: 0.1,
-              }}
-            ></View>
-          </View>
           {data.address === null || data.address === "" ? (
             <View
               style={{
@@ -164,6 +108,7 @@ export default function Home({
                 paddingVertical: 8,
                 alignItems: "center",
                 borderRadius: 8,
+                marginTop: 8,
               }}
             >
               <Ionicons
@@ -209,6 +154,10 @@ export default function Home({
                     [{ text: "OK", onPress: () => console.log("OK Pressed") }],
                     { cancelable: false }
                   );
+                } else {
+                  navigation.navigate("AddDeliveryScreen", {
+                    pickup_location: data.address,
+                  });
                 }
               }}
               style={{
@@ -242,12 +191,20 @@ export default function Home({
                 Delivery
               </Text>
             </TouchableOpacity>
-            <View
+            <TouchableOpacity
               style={{
                 justifyContent: "center",
                 alignItems: "center",
                 padding: 9,
                 borderRadius: 8,
+              }}
+              onPress={() => {
+                Alert.alert(
+                  "Coming soon",
+                  "We are still working on this feature and will be coming in the next few weeks",
+                  [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+                  { cancelable: false }
+                );
               }}
             >
               <View
@@ -273,7 +230,7 @@ export default function Home({
               >
                 PostToHome
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
         </View>
       </SafeAreaView>

@@ -10,7 +10,7 @@ export type MainParamList = {
   AddDeliveryScreen: {
     pickup_location: string;
   };
-  DrawerContent: undefined;
+  AccountScreen: undefined;
 };
 
 export type MainStackParamList<T extends keyof MainParamList> = {

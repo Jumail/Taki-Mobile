@@ -1,3 +1,5 @@
+import { Ionicons } from "@expo/vector-icons";
+import { StackActions } from "@react-navigation/native";
 import axios from "axios";
 import moment from "moment";
 import QueryString from "qs";
@@ -11,6 +13,7 @@ import {
   RefreshControl,
   SafeAreaView,
   View,
+  TouchableOpacity,
 } from "react-native";
 import {
   Appbar,
@@ -85,25 +88,28 @@ export default function HistoryScreen({
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          <Appbar.Header>
-            <Appbar.Action
-              icon="menu"
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "white",
+              padding: 14,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{ paddingRight: 20 }}
               onPress={() => {
-                navigation.openDrawer();
+                navigation.dispatch(StackActions.pop());
               }}
-            />
-            <Appbar.Content
-              title="History"
-              subtitle={`${data.length} deliveries`}
-            />
-            <Appbar.Action
-              icon="refresh"
-              onPress={() => {
-                setLoading(true);
-                getCompletedDeliveries();
-              }}
-            />
-          </Appbar.Header>
+            >
+              <Ionicons name="md-arrow-back" size={24} />
+            </TouchableOpacity>
+            <View>
+              <Text style={{ fontSize: 18, fontWeight: "700" }}>History</Text>
+              <Text>{`${data.length} deliveries`}</Text>
+            </View>
+          </View>
 
           <View style={{ flex: 1 }}>
             {data.length == 0 ? (
@@ -168,17 +174,36 @@ export default function HistoryScreen({
                           <Paragraph>{`${item.address}, nearby ${item.nearby}`}</Paragraph>
                         </View>
                         <Caption>Status: Completed</Caption>
+                        <Caption>{`Parcel type: `}</Caption>
+
+                        {Array.from(item.parcel_type).map((parcel) => {
+                          if (parcel == "[") {
+                            null;
+                          } else if (parcel == "]") {
+                            null;
+                          } else {
+                            if (parcel === "1") {
+                              return <Caption>- Small bag</Caption>;
+                            } else if (parcel === "2") {
+                              return <Caption>- Big bag</Caption>;
+                            } else if (parcel === "3") {
+                              return <Caption>- Box 1ft x 1ft</Caption>;
+                            } else {
+                              return <Caption>- Box 1.5ft x 1.5ft</Caption>;
+                            }
+                          }
+                        })}
 
                         <Button
                           mode="contained"
-                          style={{ marginTop: 4 }}
+                          style={{ marginTop: 4, backgroundColor: "#339989" }}
                           onPress={() => {
                             let phoneNumber = "";
 
                             if (Platform.OS === "android") {
                               phoneNumber = `tel:${item.customer_contact}`;
                             } else {
-                              phoneNumber = `telprompt:${item.customer.contact}`;
+                              phoneNumber = `telprompt:${item.customer_contact}`;
                             }
 
                             Linking.openURL(phoneNumber);

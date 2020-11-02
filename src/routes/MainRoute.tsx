@@ -18,6 +18,7 @@ import NotificationsScreen from "../screens/NotificationScreen";
 // Types
 import { MainParamList } from "../types/MainTypes";
 import { SafeAreaView } from "react-native-safe-area-context";
+import AccountScreen from "../screens/AccountScreen";
 
 export function HomeStack() {
   const Stack = createStackNavigator();
@@ -25,6 +26,25 @@ export function HomeStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="AddDeliveryScreen" component={AddDeliveryScreen} />
+    </Stack.Navigator>
+  );
+}
+
+export function DeliveriesStack() {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="DeliveriesScreen" component={DeliveriesScreen} />
+      <Stack.Screen name="HistoryScreen" component={HistoryScreen} />
+    </Stack.Navigator>
+  );
+}
+
+export function AccountStack() {
+  const Stack = createStackNavigator();
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="AccountScreen" component={AccountScreen} />
     </Stack.Navigator>
   );
 }
@@ -51,7 +71,7 @@ export default function MaterialRoutes() {
         >
           <Tab.Screen
             name="DeliveriesScreen"
-            component={DeliveriesScreen}
+            component={DeliveriesStack}
             options={{
               tabBarIcon: ({ color, focused }) => (
                 <Ionicons
@@ -76,8 +96,8 @@ export default function MaterialRoutes() {
             }}
           />
           <Tab.Screen
-            name="FeedbackScreen"
-            component={FeedbackScreen}
+            name="AccountScreen"
+            component={AccountStack}
             options={{
               tabBarIcon: ({ color, focused }) => (
                 <Ionicons

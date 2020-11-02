@@ -38,6 +38,7 @@ export default function DeliveriesScreen({
   const [selectedData, setSelectedData] = React.useState();
 
   React.useEffect(() => {
+    // Automatically reload the screen on focus
     const unsubscribe = navigation.addListener("focus", () => {
       // do something
       setLoading(true);
@@ -112,6 +113,11 @@ export default function DeliveriesScreen({
                 padding: 8,
                 borderRadius: 20,
               }}
+              onPress={() => {
+                console.log("ADADADAD");
+                console.log("Hello World");
+                navigation.navigate("HistoryScreen");
+              }}
             >
               <Text style={{ color: "white", fontWeight: "600" }}>History</Text>
             </TouchableOpacity>
@@ -136,7 +142,7 @@ export default function DeliveriesScreen({
                 refreshControl={
                   <RefreshControl
                     refreshing={loading}
-                    onRefresh={() => getOngoingDeliveries()}
+                    onRefresh={() => getCompletedDeliveries()}
                   />
                 }
                 scrollEnabled={true}
@@ -186,17 +192,36 @@ export default function DeliveriesScreen({
                             ? "Dispatched"
                             : "Picked up"
                         }`}</Caption>
+                        <Caption>{`Parcel type: `}</Caption>
+
+                        {Array.from(item.parcel_type).map((parcel) => {
+                          if (parcel == "[") {
+                            null;
+                          } else if (parcel == "]") {
+                            null;
+                          } else {
+                            if (parcel === "1") {
+                              return <Caption>- Small bag</Caption>;
+                            } else if (parcel === "2") {
+                              return <Caption>- Big bag</Caption>;
+                            } else if (parcel === "3") {
+                              return <Caption>- Box 1ft x 1ft</Caption>;
+                            } else {
+                              return <Caption>- Box 1.5ft x 1.5ft</Caption>;
+                            }
+                          }
+                        })}
 
                         <Button
                           mode="contained"
-                          style={{ marginTop: 4 }}
+                          style={{ marginTop: 4, backgroundColor: "#339989" }}
                           onPress={() => {
                             let phoneNumber = "";
 
                             if (Platform.OS === "android") {
                               phoneNumber = `tel:${item.customer_contact}`;
                             } else {
-                              phoneNumber = `telprompt:${item.customer.contact}`;
+                              phoneNumber = `telprompt:${item.customer_contact}`;
                             }
 
                             Linking.openURL(phoneNumber);

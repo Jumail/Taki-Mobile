@@ -10,30 +10,32 @@ import { AuthContext } from "../helpers/AuthContext";
 // Types
 import { AuthStackParamList } from "../types/AuthTypes";
 
-export default function Login({
+export default function ForgotScreen({
   navigation,
   route,
-}: AuthStackParamList<"LoginScreen">) {
+}: AuthStackParamList<"ForgotScreen">) {
   const [errorMsg, setErrorMsg] = React.useState(String);
   const [email, setEmail] = React.useState(String);
   const [password, setPassword] = React.useState(String);
   const { signIn } = React.useContext(AuthContext);
 
-  function _doLogin() {
+  const _sendLink = () => {
+    console.log("SENDING LINK");
     axios
-      .post("/auth/local", {
-        identifier: email,
-        password: password,
+      .post("/auth/forgot-password", {
+        email: email,
       })
-      .then(function (response) {
-        signIn(response.data);
+      .then((response) => {
+        // Handle success.
+        console.log("Your user received an email");
+        console.log(response.data);
       })
-      .catch(function (error) {
-        console.log(error.response.data.data[0].messages[0].message);
-        setErrorMsg(error.response.data.data[0].messages[0].message);
+      .catch((error) => {
+        console.log(error);
+        // Handle error.
+        console.log("An error occurred:", error.response);
       });
-  }
-
+  };
   return (
     <View style={{ flex: 1 }}>
       <Appbar.Header style={{ elevation: 0, backgroundColor: "white" }}>
@@ -42,7 +44,7 @@ export default function Login({
             navigation.dispatch(StackActions.pop());
           }}
         />
-        <Appbar.Content title="Login" />
+        <Appbar.Content title="Reset your password" />
       </Appbar.Header>
       <View
         style={{
@@ -53,22 +55,13 @@ export default function Login({
         }}
       >
         <TextInput
-          placeholder="Email or Username"
+          placeholder="Email"
           onChangeText={(text) => {
             setErrorMsg("");
             setEmail(text);
           }}
           style={{ marginBottom: 5, backgroundColor: "white" }}
           keyboardType="email-address"
-        />
-        <TextInput
-          placeholder="Password"
-          onChangeText={(text) => {
-            setErrorMsg("");
-            setPassword(text);
-          }}
-          secureTextEntry={true}
-          style={{ backgroundColor: "white" }}
         />
         <Text style={{ marginTop: 20, color: "red" }}>{errorMsg}</Text>
         <TouchableOpacity
@@ -81,7 +74,7 @@ export default function Login({
             borderRadius: 20,
           }}
           onPress={() => {
-            _doLogin();
+            _sendLink();
           }}
         >
           <Text
@@ -91,16 +84,8 @@ export default function Login({
               color: "white",
             }}
           >
-            Login
+            Send reset link
           </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("ForgotScreen");
-          }}
-        >
-          <Text style={{ textAlign: "right" }}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
     </View>

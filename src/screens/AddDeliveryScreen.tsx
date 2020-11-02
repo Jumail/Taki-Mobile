@@ -9,12 +9,15 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
 } from "react-native";
 import { Appbar, Button, TextInput } from "react-native-paper";
+import { Ionicons } from "@expo/vector-icons";
 // import { Picker } from "@react-native-community/picker";
 import RNPickerSelect from "react-native-picker-select";
 // Types
 import { MainStackParamList } from "../types/MainTypes";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function AddDeliveryScreen({
   navigation,
@@ -135,15 +138,30 @@ export default function AddDeliveryScreen({
   return (
     <View style={{ flex: 1 }}>
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
-          <Appbar.Header>
-            <Appbar.BackAction
+        <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
+          <View
+            style={{
+              width: "100%",
+              backgroundColor: "white",
+              padding: 14,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{ paddingRight: 20 }}
               onPress={() => {
                 navigation.dispatch(StackActions.pop());
               }}
-            />
-            <Appbar.Content title="Add delivery" />
-          </Appbar.Header>
+            >
+              <Ionicons name="md-arrow-back" size={24} />
+            </TouchableOpacity>
+            <View>
+              <Text style={{ fontSize: 18, fontWeight: "700" }}>
+                Add Delivery
+              </Text>
+            </View>
+          </View>
 
           <View style={{ padding: 8 }}>
             <View
@@ -159,7 +177,7 @@ export default function AddDeliveryScreen({
                 onChangeText={(text) => {
                   setName(text);
                 }}
-                style={{ flex: 2, height: 40 }}
+                style={{ flex: 2, height: 40, backgroundColor: "white" }}
               />
             </View>
             <View
@@ -176,7 +194,7 @@ export default function AddDeliveryScreen({
                   setContact(text);
                 }}
                 keyboardType="phone-pad"
-                style={{ flex: 2, height: 40 }}
+                style={{ flex: 2, height: 40, backgroundColor: "white" }}
               />
             </View>
             <View
@@ -192,7 +210,7 @@ export default function AddDeliveryScreen({
                 onChangeText={(text) => {
                   setAddress(text);
                 }}
-                style={{ flex: 2, height: 40 }}
+                style={{ flex: 2, height: 40, backgroundColor: "white" }}
               />
             </View>
             <View
@@ -208,7 +226,7 @@ export default function AddDeliveryScreen({
                 onChangeText={(text) => {
                   setNearby(text);
                 }}
-                style={{ flex: 2, height: 40 }}
+                style={{ flex: 2, height: 40, backgroundColor: "white" }}
               />
             </View>
             <View
@@ -224,7 +242,7 @@ export default function AddDeliveryScreen({
                 onChangeText={(text) => {
                   setRemarks(text);
                 }}
-                style={{ flex: 2, height: 40 }}
+                style={{ flex: 2, height: 40, backgroundColor: "white" }}
               />
             </View>
             <View
@@ -247,6 +265,7 @@ export default function AddDeliveryScreen({
               >
                 <Button
                   mode="contained"
+                  style={{ backgroundColor: "#339989" }}
                   onPress={() => {
                     if (parcelCount != 1) {
                       const newCount = parcelCount - 1;
@@ -260,6 +279,7 @@ export default function AddDeliveryScreen({
                 <Text>{parcelCount}</Text>
                 <Button
                   mode="contained"
+                  style={{ backgroundColor: "#339989" }}
                   onPress={() => {
                     if (parcelCount != 5) {
                       const newCount = parcelCount + 1;
@@ -322,12 +342,12 @@ export default function AddDeliveryScreen({
                 validateDelivery();
               }}
               mode="contained"
-              style={{ marginTop: 8 }}
+              style={{ marginTop: 8, backgroundColor: "#339989" }}
             >
               Add delivery
             </Button>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </View>
   );
