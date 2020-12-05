@@ -40,8 +40,14 @@ export default function Home({
   const { signOut } = React.useContext(AuthContext);
 
   React.useEffect(() => {
-    makeRequest();
-  }, []);
+    // Automatically reload the screen on focus
+    const unsubscribe = navigation.addListener("focus", () => {
+      // do something
+      makeRequest();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   async function makeRequest() {
     const jwt = await AsyncStorage.getItem("@User:jwt");
@@ -199,12 +205,7 @@ export default function Home({
                 borderRadius: 8,
               }}
               onPress={() => {
-                Alert.alert(
-                  "Coming soon",
-                  "We are still working on this feature and will be coming in the next few weeks",
-                  [{ text: "OK", onPress: () => console.log("OK Pressed") }],
-                  { cancelable: false }
-                );
+                navigation.navigate("PostToHomeScreen");
               }}
             >
               <View

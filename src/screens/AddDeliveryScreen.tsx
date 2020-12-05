@@ -84,6 +84,10 @@ export default function AddDeliveryScreen({
 
     const jwt = await AsyncStorage.getItem("@User:jwt");
     const id = await AsyncStorage.getItem("@User:id");
+
+    const user_data = await AsyncStorage.getItem("@User");
+    const parsedUserData = JSON.parse(user_data!);
+
     console.log(jwt);
     axios
       .post(
@@ -98,6 +102,8 @@ export default function AddDeliveryScreen({
           parcel_type: parcel_type,
           user_id: id,
           pickup_location: route.params.pickup_location,
+          seller_contact: parsedUserData.user.phone,
+          seller_uname: parsedUserData.user.username,
         },
         {
           headers: {

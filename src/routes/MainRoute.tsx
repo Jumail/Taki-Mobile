@@ -19,6 +19,8 @@ import NotificationsScreen from "../screens/NotificationScreen";
 import { MainParamList } from "../types/MainTypes";
 import { SafeAreaView } from "react-native-safe-area-context";
 import AccountScreen from "../screens/AccountScreen";
+import PostToHomeScreen from "../screens/PostToHomeScreen";
+import PostToHomeList from "../screens/PostToHomeList";
 
 export function HomeStack() {
   const Stack = createStackNavigator();
@@ -26,6 +28,7 @@ export function HomeStack() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="AddDeliveryScreen" component={AddDeliveryScreen} />
+      <Stack.Screen name="PostToHomeScreen" component={PostToHomeScreen} />
     </Stack.Navigator>
   );
 }
@@ -45,6 +48,7 @@ export function AccountStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="AccountScreen" component={AccountScreen} />
+      <Stack.Screen name="PostToHomeList" component={PostToHomeList} />
     </Stack.Navigator>
   );
 }

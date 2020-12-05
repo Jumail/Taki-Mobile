@@ -1,19 +1,42 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View, Text, Image, Dimensions, Alert } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  Alert,
+  TextInput,
+  Platform,
+} from "react-native";
+import { Provider, Portal, Modal, Button } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Divider from "../components/Divider";
 import AsyncStorage from "@react-native-community/async-storage";
 import axios from "axios";
 // Context
 import { AuthContext } from "../helpers/AuthContext";
+// Types
+import { MainStackParamList } from "../types/MainTypes";
 
-export default function AccountScreen() {
+export default function AccountScreen({
+  navigation,
+  route,
+}: MainStackParamList<"AccountScreen">) {
   const { signOut } = React.useContext(AuthContext);
+  const [isAddressModalVisible, setIsAddressModalVisible] = React.useState(
+    false
+  );
+  const [address, setAddress] = React.useState(String);
   const [data, setData] = React.useState(Object);
 
   React.useEffect(() => {
-    makeRequest();
+    const unsubscribe = navigation.addListener("focus", () => {
+      // do something
+      makeRequest();
+    });
+
+    return unsubscribe;
   }, []);
 
   async function makeRequest() {
@@ -29,6 +52,32 @@ export default function AccountScreen() {
       .then(function (response) {
         console.log(response.data);
         setData(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  async function updateAddress() {
+    const jwt = await AsyncStorage.getItem("@User:jwt");
+    const id = await AsyncStorage.getItem("@User:id");
+
+    axios
+      .put(
+        `/users/${id}`,
+        {
+          address: address,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      )
+      .then(function (response) {
+        console.log(response.data);
+        setData(response.data);
+        setIsAddressModalVisible(false);
       })
       .catch(function (error) {
         console.log(error);
@@ -54,40 +103,7 @@ export default function AccountScreen() {
 
             <TouchableOpacity
               onPress={() => {
-                Alert.prompt("Enter new address", "", [
-                  {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel",
-                  },
-                  {
-                    text: "OK",
-                    onPress: async (address) => {
-                      const jwt = await AsyncStorage.getItem("@User:jwt");
-                      const id = await AsyncStorage.getItem("@User:id");
-
-                      axios
-                        .put(
-                          `/users/${id}`,
-                          {
-                            address: address,
-                          },
-                          {
-                            headers: {
-                              Authorization: `Bearer ${jwt}`,
-                            },
-                          }
-                        )
-                        .then(function (response) {
-                          console.log(response.data);
-                          setData(response.data);
-                        })
-                        .catch(function (error) {
-                          console.log(error);
-                        });
-                    },
-                  },
-                ]);
+                setIsAddressModalVisible(true);
               }}
               style={{
                 backgroundColor: "#2B2c28",
@@ -117,6 +133,19 @@ export default function AccountScreen() {
         <Divider />
         <TouchableOpacity
           onPress={() => {
+            navigation.navigate("PostToHomeList");
+            console.log("Navigate to post to home list...");
+          }}
+          style={{ flexDirection: "row", alignItems: "center" }}
+        >
+          <Ionicons name="md-mail" size={24} />
+          <Text style={{ fontSize: 18, fontWeight: "500", marginStart: 8 }}>
+            My Post to Home
+          </Text>
+        </TouchableOpacity>
+        <Divider />
+        <TouchableOpacity
+          onPress={() => {
             signOut();
           }}
           style={{
@@ -142,9 +171,81 @@ export default function AccountScreen() {
             marginTop: 8,
           }}
         >
-          <Text>Version 1.0.9</Text>
+          <Text>Version 1.1.2</Text>
         </View>
       </View>
+      <Provider>
+        <Portal>
+          <Modal
+            visible={isAddressModalVisible}
+            contentContainerStyle={{
+              flex: 1,
+              marginTop: Platform.OS == "android" ? 100 : 0,
+            }}
+          >
+            <View style={{ flex: 1, paddingHorizontal: 14 }}>
+              <View
+                style={{
+                  backgroundColor: "white",
+                  paddingVertical: 40,
+                  marginTop: 20,
+                  borderRadius: 20,
+                }}
+              >
+                {/* <MyLocationSvg
+                    width={Dimensions.get("window").width}
+                    height={Dimensions.get("window").width / 2}
+                  /> */}
+
+                <View style={{ alignItems: "center", paddingHorizontal: 20 }}>
+                  <Text>
+                    Your address will be used as a pickup location. Please make
+                    sure it is accurate.
+                  </Text>
+                  <TextInput
+                    placeholder="Enter address"
+                    placeholderTextColor="gray"
+                    onChangeText={(text) => {
+                      setAddress(text);
+                    }}
+                    style={{
+                      width: "100%",
+                      marginVertical: 20,
+                      borderBottomWidth: 2,
+                      borderBottomColor: "gray",
+                      marginHorizontal: 20,
+                      padding: 8,
+                      marginTop: 30,
+                    }}
+                  ></TextInput>
+                  <Button
+                    mode="contained"
+                    style={{ width: "100%", backgroundColor: "#339989" }}
+                    onPress={() => {
+                      updateAddress();
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>Save</Text>
+                  </Button>
+                  <Button
+                    mode="contained"
+                    style={{
+                      width: "100%",
+                      backgroundColor: "#2B2C28",
+                      marginTop: 6,
+                    }}
+                    onPress={() => {
+                      setIsAddressModalVisible(false);
+                    }}
+                  >
+                    <Text style={{ color: "white" }}>Cancel</Text>
+                  </Button>
+                </View>
+              </View>
+            </View>
+          </Modal>
+        </Portal>
+      </Provider>
     </View>
   );
 }

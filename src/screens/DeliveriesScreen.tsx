@@ -56,7 +56,7 @@ export default function DeliveriesScreen({
 
     // Query in the url
     const query = QueryString.stringify({
-      _where: [{ user_id: id }, { status: 1 || 2 || 3 }],
+      _where: [{ user_id: id }, { status_ne: 4 }],
     });
 
     console.log(query);
@@ -142,7 +142,7 @@ export default function DeliveriesScreen({
                 refreshControl={
                   <RefreshControl
                     refreshing={loading}
-                    onRefresh={() => getCompletedDeliveries()}
+                    onRefresh={() => getOngoingDeliveries()}
                   />
                 }
                 scrollEnabled={true}
@@ -206,7 +206,7 @@ export default function DeliveriesScreen({
                               return <Caption>- Big bag</Caption>;
                             } else if (parcel === "3") {
                               return <Caption>- Box 1ft x 1ft</Caption>;
-                            } else {
+                            } else if (parcel === 4) {
                               return <Caption>- Box 1.5ft x 1.5ft</Caption>;
                             }
                           }

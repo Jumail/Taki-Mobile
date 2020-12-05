@@ -11,6 +11,8 @@ export type MainParamList = {
     pickup_location: string;
   };
   AccountScreen: undefined;
+  PostToHomeScreen: undefined;
+  PostToHomeList: undefined;
 };
 
 export type MainStackParamList<T extends keyof MainParamList> = {
